@@ -33,6 +33,19 @@ def classify_safety_tier(question: str) -> dict:
       - "refuse"  : high-risk repairs that require a licensed professional —
                     mistakes can cause fire, flooding, injury, or structural damage
     """
+    client = Groq()
+
+    chat = client.chat.completions.create(
+        model = LLM_MODEL,
+        max_tokens = 256,
+        temperature = 0.0,
+        messages = [
+            {"role": "user", "content": question}
+        ],
+    )
+    raw = chat.choices[0].message.content
+    result = parse_response(raw)
+
     return {
         "tier": "unknown",
         "reason": "Classification not yet implemented. Complete Milestone 1.",
